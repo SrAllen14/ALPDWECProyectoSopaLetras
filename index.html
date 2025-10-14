@@ -17,10 +17,11 @@
         
         <script>
             // Comprobaciones
-            let vPalabras = [];
+            let vPalabras = palabras();
+            let sopaDeLetras = crearTablero(contarPalabras(vPalabras));
+            console.log(situarPalabras(vPalabras, sopaDeLetras));
+            console.log(rellenarTablero(sopaDeLetras));
             
-            vPalabras = palabras();
-            console.log(contarPalabras(vPalabras));
             
             /*
              * Función que almacena en un vector las palabras a situar en la sopa de letras.
@@ -38,6 +39,7 @@
                     }
                 }while(palabra !== null);
                 
+                palabras.sort((a, b)=>b.length-a.length);
                 return palabras;
             }
             
@@ -53,31 +55,134 @@
                 for(element of palabras){
                     acum += element.length;
                 }
+                do{
+                    dim += Math.floor(Math.sqrt(acum*2))+1;
+                }while(dim <= palabras[0].length);
                 
-                dim = Math.floor(Math.sqrt(acum*2));
                 return dim;
             }
-            
             
             /*
              * Función para dimensionar el tablero teniendo en cuenta la palabra más larga y la cantidad de letras.
              * @param vector que contiene todas las palabras
              * @returns matriz con las dimensiones correspondientes
              */ 
-            function crearTablero(){}
+            function crearTablero(dimension){
+                let tablero = [[]];
+                
+                for (let i = 0; i < dimension; i++){
+                    tablero [i] = [];
+                    for (let j = 0; j < dimension; j++){
+                        tablero [i][j]= null;
+                    }
+                }
+                return tablero;
+            }
             /*
-             * Función para colocar las palabras en el tablero vacio.
+             * Función para verificar la posición de las palabras en el tablero vacio. Usará la función escribirPalabras(fila, columnas, direcciones) 
+             * para escribir las palabras después de las comprobaciones.
+             * 
              * @param vector que contiene todas las palabras y tablero vacio.
              * @returns matriz del tablero con las palabras situadas y espacios en blanco en los huecos vacios.
              */
-            function situarPalabras(){}
+            function situarPalabras(vPalabras, mTablero){
+                let acum = 0;
+                let palabra = vPalabras[0];
+                let direcciones = ["ar", "dsi", "izd", "dii", "ab", "did", "drc", "dsd"];
+                let dCorrecta = false;
+                let i = Math.floor(Math.random(0, 1)*mTablero.length);
+                let j = Math.floor(Math.random(0, 1)*mTablero[0].length);
+                console.log(mTablero.length,"",i,",",j,"",palabra.length);
+                
+                do{  
+                    direccion = direcciones[Math.floor(Math.random(0, 1) * direcciones.length)];
+                    switch(direccion){
+                        case "ar": if((i-palabra.length+1) >= 0){dCorrecta = true;}
+                            break;
+                        case "dsi": if((i-palabra.length+1) >= 0 && j+palabra.length-1 < mTablero[0].length){dCorrecta = true;}
+                            break;
+                        case "izd": if((j+palabra.length-1) < mTablero[0].length){dCorrecta = true;}
+                            break;
+                        case "dii": if((i+palabra.length-1) < mTablero.length && j+palabra.length-1 < mTablero[0].length){dCorrecta = true;}
+                            break;
+                        case "ab": if((i+palabra.length-1) < mTablero.length){dCorrecta = true;}
+                            break;
+                        case "did": if((i+palabra.length-1) >= 0 && j-palabra.length+1 >= 0){dCorrecta = true;}
+                            break;
+                        case "drc": if((j-palabra.length+1) > 0){dCorrecta = true;}
+                            break;
+                        case "dsd": if((i-palabra.length+1) >= 0 && j-palabra.length+1 >= 0){dCorrecta = true;}
+                            break;
+                        default: console.log("");
+                            break;
+                    }
+                    
+                    if(!dCorrecta){
+                        direcciones.splice(direcciones.indexOf(direccion),1);
+                    } else{
+                        console.log("La dirección es :", direccion);
+                    }
+                    acum++;
+                }while(!dCorrecta && acum <= 8);
+                
+                /*for(let c = 0; c < palabra.length; c++){
+                    if((mTablero[i][j] !== null) && (mTablero[i][j] !== palabra[c])){
+                        dCorrecta = false;
+                    }
+                    i++;
+                    j++;                            
+                }*/
+            }
             
+            /*
+             * Función que escribe la palabra según la posición de la primera letras y dirección definida.
+             * 
+             * @param {type} fila
+             * @param {type} columna
+             * @param {type} direccion
+             * @returns {undefined}
+             */
+            function escribirPalabras(fila, columna, direccion){
+                switch (dirección){
+                    case "ar":
+                        break;
+                    case "dsi":
+                        break;
+                    case "izd":
+                        break;
+                    case "dii":
+                        break;
+                    case "ab":
+                        break;
+                    case "did":
+                        break;
+                    case "drc":
+                        break;
+                    case "dsd":
+                        break;
+                }
+            }
             /*
              * Funcón para rellenar los huecos vacios del tablero.
              * @param matriz del tablero con las palabras ya colocadas.
              * @returns matriz del tablero completado.
              */
-            function rellenarTablero(){}
+            function rellenarTablero(mTablero){
+                let abecedario = ["a", "b", "c", "d", "e", "f", "g", "h",
+                                  "i", "j", "k", "l", "m", "n", "ñ", "o",
+                                  "p", "q", "r", "s", "t", "u", "v", "w",
+                                  "x", "y", "z"
+                                 ];
+
+                for (let i = 0; i < mTablero.length; i++){
+                    for (let j = 0; j < mTablero.length; j++){
+                        if(mTablero[i][j] === null){
+                            mTablero[i][j] = abecedario[Math.floor(Math.random(0, 26)*10)];
+                        }
+                    }
+                }
+                return mTablero;
+            }
         </script>
     </body>
 </html>
