@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <title>Sopa de letras</title>
+    </head>
+    <body>
+        <!-- 
+            Sopa de letras: las dimensiones del tablero deberán de ser mínimo la longitud de la palabra más larga y 
+            calculando la cantidad de letras que suman todas las palabras establecer un cuadrado que permita introducir 
+            el doble de estas, es decir, si las palabras suman 50 caracteres en total, se deberá buscar un cuadrado que 
+            pueda almacenar 100 caracteres como podría ser un 10X10.
+        
+            Tiene que haber, mas o menos, un 30% de vocales y un 70% de consonantes.
+            
+            La forma de rellenar el tablero una vez situada las palabras de manera correcta, será aleatoriamente.
+        -->
+        
+        <script>
+            // Comprobaciones
+            let vPalabras = [];
+            
+            vPalabras = palabras();
+            console.log(contarPalabras(vPalabras));
+            
+            /*
+             * Función que almacena en un vector las palabras a situar en la sopa de letras.
+             * @param 
+             * @returns vector con las palabras introducidas.
+             */
+            function palabras(){
+                let palabra;
+                let palabras = [];
+                do{
+                    alert("Se deben introducir palabras. En caso de cancelar la operación se acabará el proceso...");
+                    palabra = prompt("Introduzca una palabra.");
+                    if(palabra !== null){
+                        palabras.push(palabra);
+                    }
+                }while(palabra !== null);
+                
+                return palabras;
+            }
+            
+            /*
+             * Función que nos indica el número total de letras para poder decidir las dimensiones del array.
+             * @param vector que contiene las palabras.
+             * @returns dimensión del tablero de la sopa de letras.
+             */
+            function contarPalabras(palabras){
+                let dim = 0;
+                let acum = 0;
+                
+                for(element of palabras){
+                    acum += element.length;
+                }
+                
+                dim = Math.floor(Math.sqrt(acum*2));
+                return dim;
+            }
+            
+            
+            /*
+             * Función para dimensionar el tablero teniendo en cuenta la palabra más larga y la cantidad de letras.
+             * @param vector que contiene todas las palabras
+             * @returns matriz con las dimensiones correspondientes
+             */ 
+            function crearTablero(){}
+            /*
+             * Función para colocar las palabras en el tablero vacio.
+             * @param vector que contiene todas las palabras y tablero vacio.
+             * @returns matriz del tablero con las palabras situadas y espacios en blanco en los huecos vacios.
+             */
+            function situarPalabras(){}
+            
+            /*
+             * Funcón para rellenar los huecos vacios del tablero.
+             * @param matriz del tablero con las palabras ya colocadas.
+             * @returns matriz del tablero completado.
+             */
+            function rellenarTablero(){}
+        </script>
+    </body>
+</html>
