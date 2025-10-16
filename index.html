@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <title>Sopa de letras</title>
+    </head>
+    <body>
+        <!-- 
+            Sopa de letras: las dimensiones del tablero deberán de ser mínimo la longitud de la palabra más larga y 
+            calculando la cantidad de letras que suman todas las palabras establecer un cuadrado que permita introducir 
+            el doble de estas, es decir, si las palabras suman 50 caracteres en total, se deberá buscar un cuadrado que 
+            pueda almacenar 100 caracteres como podría ser un 10X10.
+        
+            Tiene que haber, mas o menos, un 30% de vocales y un 70% de consonantes.
+            
+            La forma de rellenar el tablero una vez situada las palabras de manera correcta, será aleatoriamente.
+        -->
+        
+        <script>
+            // Comprobaciones
+            let vPalabras = palabras();
+            let sopaDeLetras = crearTablero(contarPalabras(vPalabras));
+            
+            sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
+            sopaDeLetras = rellenarTablero(sopaDeLetras);
+            
+            mostrarPagina(sopaDeLetras);
+            
+            /*
+             * Función que almacena en un vector las palabras a situar en la sopa de letras.
+             * @param 
+             * @returns vector con las palabras introducidas.
+             */
+            function palabras(){
+                let palabra;
+                let palabras = [];
+                do{
+                    alert("Se deben introducir palabras. En caso de cancelar la operación se acabará el proceso...");
+                    palabra = prompt("Introduzca una palabra.");
+                    if(palabra !== null){
+                        palabras.push(palabra);
+                    }
+                }while(palabra !== null);
+                
+                palabras.sort((a, b)=>b.length-a.length);
+                return palabras;
+            }
+            
+            /*
+             * Función que nos indica el número total de letras para poder decidir las dimensiones del array.
+             * @param vector que contiene las palabras.
+             * @returns dimensión del tablero de la sopa de letras.
+             */
+            function contarPalabras(palabras){
+                let dim = 0;
+                let acum = 0;
+                
+                for(element of palabras){
+                    acum += element.length;
+                }
+                dim = palabras[0].length+2;
+                
+                return dim;
+            }
+            
+            /*
+             * Función para dimensionar el tablero teniendo en cuenta la palabra más larga y la cantidad de letras.
+             * @param vector que contiene todas las palabras
+             * @returns matriz con las dimensiones correspondientes
+             */ 
+            function crearTablero(dimension){
+                let tablero = [[]];
+                
+                for (let i = 0; i < dimension; i++){
+                    tablero [i] = [];
+                    for (let j = 0; j < dimension; j++){
+                        tablero [i][j]= null;
+                    }
+                }
+                return tablero;
+            }
+            /*
+             * Función para verificar la posición de las palabras en el tablero vacio. Usará la función escribirPalabras(fila, columnas, direcciones) 
+             * para escribir las palabras después de las comprobaciones.
+             * 
+             * @param vector que contiene todas las palabras y tablero vacio.
+             * @returns matriz del tablero con las palabras situadas y espacios en blanco en los huecos vacios.
+             */
+            function situarPalabras(vPalabras, mTablero){
+                let vPalabrasClave = [];
+                let acumDir;
+                let acumPos;
+                let palabra;
+                let direcciones;
+                let dCorrecta;
+                let i;
+                let j;
+                let fila;
+                let columna;
+                for(element of vPalabras){
+                    acumPos = 0;
+                    palabra = element;
+                    do{
+                        dCorrecta = false;
+                        acumDir = 0;
+                        i = Math.floor(Math.random(0, 1)*mTablero.length);
+                        j = Math.floor(Math.random(0, 1)*mTablero[0].length);
+                        direcciones = ["ar", "dsi", "izd", "dii", "ab", "did", "drc", "dsd"]
+                        do{
+                            direccion = direcciones[Math.floor(Math.random(0, 1) * direcciones.length)];
+                            fila = i;
+                            columna = j;
+                            switch(direccion){
+                                case "ar": if((i-palabra.length+1) >= 0){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                fila--;                       
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "dsi": if((i-palabra.length+1) >= 0 && j+palabra.length-1 < mTablero[0].length){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                fila--;
+                                                columna++;                            
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "izd": if((j+palabra.length-1) < mTablero[0].length){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                columna++;                            
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "dii": if((i+palabra.length-1) < mTablero.length && j+palabra.length-1 < mTablero[0].length){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                fila++;
+                                                columna++;                            
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "ab": if((i+palabra.length-1) < mTablero.length){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                fila++;                            
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "did": if((i+palabra.length-1) < mTablero.length && j-palabra.length+1 >= 0){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                fila++;
+                                                columna--;                            
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "drc": if((j-palabra.length+1) > 0){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                columna--;                            
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "dsd": if((i-palabra.length+1) >= 0 && j-palabra.length+1 >= 0){
+                                        dCorrecta = true;
+                                        if(dCorrecta){
+                                            for(let c = 0; c < palabra.length; c++){
+                                                if((mTablero[fila][columna] !== null) && (mTablero[fila][columna] !== palabra[c])){
+                                                    dCorrecta = false;
+                                                }
+                                                fila--;
+                                                columna--;                            
+                                            }
+                                        }
+                                    }
+                                    break;
+                                        default: console.log("");
+                                    break;
+                                }
+
+                            if(!dCorrecta){
+                                direcciones.splice(direcciones.indexOf(direccion),1);
+                            } else{
+                                mTablero = escribirPalabras(i, j, direccion, palabra, mTablero);
+                                vPalabrasClave.push(palabra);
+                            }
+                            acumDir++;
+                        }while(!dCorrecta && acumDir <= 8);
+                        acumPos++;
+                    }while(!dCorrecta && acumPos <= mTablero.length*mTablero[0].length);
+                }
+                
+                mostrarPalabras(vPalabrasClave);
+                return mTablero;
+            }
+            
+            /*
+             * Función que escribe la palabra según la posición de la primera letras y dirección definida.
+             * 
+             * @param {int} fila
+             * @param {int} columna
+             * @param {String} direccion
+             * @param (String) palabra
+             * @param (table) mTablero
+             * @returns {undefined}
+             */
+            function escribirPalabras(fila, columna, direccion, palabra, mTablero){
+                
+                switch (direccion){
+                    case "ar":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            fila--;                       
+                        }
+                        break;
+                    case "dsi":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            fila--;
+                            columna++;                        
+                        }
+                        break;
+                    case "izd":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            columna++;                      
+                        }
+                        break;
+                    case "dii":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            fila++;
+                            columna++;
+                        }
+                        break;
+                    case "ab":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            fila++;                       
+                        }
+                        break;
+                    case "did":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            fila++; 
+                            columna--;
+                        }
+                        break;
+                    case "drc":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            columna--;                       
+                        }
+                        break;
+                    case "dsd":
+                        for(let c = 0; c < palabra.length; c++){
+                            mTablero[fila][columna]=palabra[c];
+                            fila--;
+                            columna--;
+                        }
+                        break;
+                }
+                return mTablero;
+            }
+            /*
+             * Funcón para rellenar los huecos vacios del tablero.
+             * @param matriz del tablero con las palabras ya colocadas.
+             * @returns matriz del tablero completado.
+             */
+            function rellenarTablero(mTablero){
+                let abecedario = ["a", "b", "c", "d", "e", "f", "g", "h",
+                                  "i", "j", "k", "l", "m", "n", "ñ", "o",
+                                  "p", "q", "r", "s", "t", "u", "v", "w",
+                                  "x", "y", "z"
+                                 ];
+
+                for (let i = 0; i < mTablero.length; i++){
+                    for (let j = 0; j < mTablero.length; j++){
+                        if(mTablero[i][j] === null){
+                            mTablero[i][j] = abecedario[Math.floor(Math.random(0, 26)*10)];
+                        }
+                    }
+                }
+                return mTablero;
+            }
+            
+            /*
+             * @param (tabla) mTableroCompleto
+             */
+            function mostrarPagina(mTableroCompleto){
+                console.log(mTableroCompleto);
+                for (let i = 0; i < mTableroCompleto.length; i++){
+                    for (let j = 0; j < mTableroCompleto.length; j++){
+                        document.write(`${mTableroCompleto[i][j]}    `);
+                    }
+                    document.write(`<br>`);
+                }
+            }
+            
+            function mostrarPalabras(vPalabrasClave){
+                console.log(vPalabrasClave);
+                for(elements of vPalabrasClave){
+                    document.write(`${elements}, `);
+                }
+            }
+        </script>
+    </body>
+</html>
