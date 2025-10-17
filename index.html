@@ -239,7 +239,7 @@
              * @param {String} direccion
              * @param (String) palabra
              * @param (table) mTablero
-             * @returns {undefined}
+             * @returns (table) mTablero
              */
             function escribirPalabras(fila, columna, direccion, palabra, mTablero){
                 
@@ -314,7 +314,7 @@
                 for (let i = 0; i < mTablero.length; i++){
                     for (let j = 0; j < mTablero.length; j++){
                         if(mTablero[i][j] === null){
-                            mTablero[i][j] = abecedario[Math.floor(Math.random(0, 26)*10)];
+                            mTablero[i][j] = abecedario[Math.floor(Math.random(0, 1)*abecedario.length)];
                         }
                     }
                 }
