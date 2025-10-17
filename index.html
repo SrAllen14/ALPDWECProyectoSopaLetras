@@ -17,7 +17,7 @@
         
         <script>
             // Comprobaciones
-            let vPalabras = palabras();
+            let vPalabras = ["volante","barato","grande","idiota","pereza","zapato","abaco","coche","delta","folio","helio","sitio","jota","kilo","leon","rio"];
             let sopaDeLetras = crearTablero(contarPalabras(vPalabras));
             
             sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
@@ -33,8 +33,8 @@
             function palabras(){
                 let palabra;
                 let palabras = [];
+                alert("Se deben introducir palabras. En caso de cancelar la operación se acabará el proceso...");
                 do{
-                    alert("Se deben introducir palabras. En caso de cancelar la operación se acabará el proceso...");
                     palabra = prompt("Introduzca una palabra.");
                     if(palabra !== null){
                         palabras.push(palabra);
@@ -51,14 +51,15 @@
              * @returns dimensión del tablero de la sopa de letras.
              */
             function contarPalabras(palabras){
-                let dim = 0;
+                let dim = palabras[0].length+2;
                 let acum = 0;
                 
                 for(element of palabras){
                     acum += element.length;
                 }
-                dim = palabras[0].length+2;
-                
+                if(Math.floor(Math.sqrt(acum*2))+1>dim){
+                    dim = Math.floor(Math.sqrt(acum*2))+1;
+                }
                 return dim;
             }
             
