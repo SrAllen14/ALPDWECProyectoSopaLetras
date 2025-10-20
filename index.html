@@ -2,6 +2,17 @@
 <html lang="es">
     <head>
         <title>Sopa de letras</title>
+        <style>
+            table{
+                border-collapse: collapse;
+            }
+            td{
+                text-align: center;
+                width: 25px;
+                height: 25px;
+                border: 1px solid black;
+            }
+        </style>
     </head>
     <body>
         <!-- 
@@ -17,13 +28,14 @@
         
         <script>
             // Comprobaciones
-            let vPalabras = palabras();
+            let vPalabras = ["volante","barato","grande","idiota","pereza","zapato","abaco","coche","delta","folio","helio","sitio","jota","kilo","leon","rio"];
             let sopaDeLetras = crearTablero(contarPalabras(vPalabras));
             
             sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
             sopaDeLetras = rellenarTablero(sopaDeLetras);
             
-            mostrarPagina(sopaDeLetras);
+            //mostrarPagina(sopaDeLetras);
+            mostrarEnTabla(sopaDeLetras);
             
             /*
              * Función que almacena en un vector las palabras a situar en la sopa de letras.
@@ -33,8 +45,8 @@
             function palabras(){
                 let palabra;
                 let palabras = [];
+                alert("Se deben introducir palabras. En caso de cancelar la operación se acabará el proceso...");
                 do{
-                    alert("Se deben introducir palabras. En caso de cancelar la operación se acabará el proceso...");
                     palabra = prompt("Introduzca una palabra.");
                     if(palabra !== null){
                         palabras.push(palabra);
@@ -51,14 +63,15 @@
              * @returns dimensión del tablero de la sopa de letras.
              */
             function contarPalabras(palabras){
-                let dim = 0;
+                let dim = palabras[0].length;
                 let acum = 0;
                 
                 for(element of palabras){
                     acum += element.length;
                 }
-                dim = palabras[0].length+2;
-                
+                if(Math.floor(Math.sqrt(acum*2))+1>dim){
+                    dim = Math.floor(Math.sqrt(acum*2))+1;
+                }
                 return dim;
             }
             
@@ -238,10 +251,9 @@
              * @param {String} direccion
              * @param (String) palabra
              * @param (table) mTablero
-             * @returns {undefined}
+             * @returns (table) mTablero
              */
-            function escribirPalabras(fila, columna, direccion, palabra, mTablero){
-                
+            function escribirPalabras(fila, columna, direccion, palabra, mTablero){   
                 switch (direccion){
                     case "ar":
                         for(let c = 0; c < palabra.length; c++){
@@ -313,7 +325,7 @@
                 for (let i = 0; i < mTablero.length; i++){
                     for (let j = 0; j < mTablero.length; j++){
                         if(mTablero[i][j] === null){
-                            mTablero[i][j] = abecedario[Math.floor(Math.random(0, 26)*10)];
+                            mTablero[i][j] = abecedario[Math.floor(Math.random(0, 1)*abecedario.length)];
                         }
                     }
                 }
@@ -323,21 +335,24 @@
             /*
              * @param (tabla) mTableroCompleto
              */
-            function mostrarPagina(mTableroCompleto){
-                console.log(mTableroCompleto);
-                for (let i = 0; i < mTableroCompleto.length; i++){
-                    for (let j = 0; j < mTableroCompleto.length; j++){
-                        document.write(`${mTableroCompleto[i][j]}    `);
-                    }
-                    document.write(`<br>`);
-                }
-            }
             
             function mostrarPalabras(vPalabrasClave){
                 console.log(vPalabrasClave);
                 for(elements of vPalabrasClave){
                     document.write(`${elements}, `);
                 }
+            }
+            
+            function mostrarEnTabla(tablero){
+                document.write("<table>");
+                for(let i=0; i < tablero.length; i++){
+                    document.write("<tr>");
+                    for(let j = 0; j < tablero.length; j++){
+                        document.write(`<td>${tablero[i][j]}</td>`);
+                    }
+                    document.write("</tr>");
+                }
+                document.write("</table>");
             }
         </script>
     </body>
