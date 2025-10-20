@@ -2,6 +2,17 @@
 <html lang="es">
     <head>
         <title>Sopa de letras</title>
+        <style>
+            table{
+                border-collapse: collapse;
+            }
+            td{
+                text-align: center;
+                width: 25px;
+                height: 25px;
+                border: 1px solid black;
+            }
+        </style>
     </head>
     <body>
         <!-- 
@@ -23,7 +34,8 @@
             sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
             sopaDeLetras = rellenarTablero(sopaDeLetras);
             
-            mostrarPagina(sopaDeLetras);
+            //mostrarPagina(sopaDeLetras);
+            mostrarEnTabla(sopaDeLetras);
             
             /*
              * Función que almacena en un vector las palabras a situar en la sopa de letras.
@@ -51,7 +63,7 @@
              * @returns dimensión del tablero de la sopa de letras.
              */
             function contarPalabras(palabras){
-                let dim = palabras[0].length+2;
+                let dim = palabras[0].length;
                 let acum = 0;
                 
                 for(element of palabras){
@@ -241,8 +253,7 @@
              * @param (table) mTablero
              * @returns (table) mTablero
              */
-            function escribirPalabras(fila, columna, direccion, palabra, mTablero){
-                
+            function escribirPalabras(fila, columna, direccion, palabra, mTablero){   
                 switch (direccion){
                     case "ar":
                         for(let c = 0; c < palabra.length; c++){
@@ -324,21 +335,24 @@
             /*
              * @param (tabla) mTableroCompleto
              */
-            function mostrarPagina(mTableroCompleto){
-                console.log(mTableroCompleto);
-                for (let i = 0; i < mTableroCompleto.length; i++){
-                    for (let j = 0; j < mTableroCompleto.length; j++){
-                        document.write(`${mTableroCompleto[i][j]}    `);
-                    }
-                    document.write(`<br>`);
-                }
-            }
             
             function mostrarPalabras(vPalabrasClave){
                 console.log(vPalabrasClave);
                 for(elements of vPalabrasClave){
                     document.write(`${elements}, `);
                 }
+            }
+            
+            function mostrarEnTabla(tablero){
+                document.write("<table>");
+                for(let i=0; i < tablero.length; i++){
+                    document.write("<tr>");
+                    for(let j = 0; j < tablero.length; j++){
+                        document.write(`<td>${tablero[i][j]}</td>`);
+                    }
+                    document.write("</tr>");
+                }
+                document.write("</table>");
             }
         </script>
     </body>
