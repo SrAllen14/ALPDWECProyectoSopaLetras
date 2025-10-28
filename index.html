@@ -2,6 +2,7 @@
 <html lang="es">
     <head>
         <title>Sopa de letras</title>
+        <meta charset="UTF-8">
         <style>
             table{
                 border-collapse: collapse;
@@ -11,6 +12,40 @@
                 width: 25px;
                 height: 25px;
                 border: 1px solid black;
+            }
+            .ar{
+                color: green;
+            }
+            
+            .dsi{
+                color: blue;
+            }
+            
+            .izd{
+                color: red;
+            }
+            
+            .dii{
+                color: darkolivegreen;
+            }
+            
+            .ab{
+                color: orange;
+            }
+            
+            .did{
+                color: pink;
+            }
+            
+            .drc{
+                color: violet;
+            }
+            
+            .dsd{
+                color: purple;
+            }
+            .vacio{
+                display: black;
             }
         </style>
     </head>
@@ -28,7 +63,11 @@
         
         <script>
             // Comprobaciones
-            let vPalabras = ["volante","barato","grande","idiota","pereza","zapato","abaco","coche","delta","folio","helio","sitio","jota","kilo","leon","rio"];
+            let vPalabras = ["volante","barato","grande","idiota","pereza","zapato","abaco","coche","delta","folio","helio",
+                             "sitio","jota","kilo","leon","rio","lunes","martes","miercoles","jueves","viernes","sabado", 
+                             "domingo","enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre",
+                             "octubre","noviembre","diciembre"];
+            vPalabras.sort((a, b)=>b.length-a.length);
             let sopaDeLetras = crearTablero(contarPalabras(vPalabras));
             
             sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
@@ -257,52 +296,52 @@
                 switch (direccion){
                     case "ar":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='ar'>"+palabra[c]+"</span>";
                             fila--;                       
                         }
                         break;
                     case "dsi":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='dsi'>"+palabra[c]+"</span>";
                             fila--;
                             columna++;                        
                         }
                         break;
                     case "izd":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='izd'>"+palabra[c]+"</span>";
                             columna++;                      
                         }
                         break;
                     case "dii":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='dii'>"+palabra[c]+"</span>";
                             fila++;
                             columna++;
                         }
                         break;
                     case "ab":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='ab'>"+palabra[c]+"</span>";
                             fila++;                       
                         }
                         break;
                     case "did":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='did'>"+palabra[c]+"</span>";
                             fila++; 
                             columna--;
                         }
                         break;
                     case "drc":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='drc'>"+palabra[c]+"</span>";
                             columna--;                       
                         }
                         break;
                     case "dsd":
                         for(let c = 0; c < palabra.length; c++){
-                            mTablero[fila][columna]=palabra[c];
+                            mTablero[fila][columna]= "<span class='dsd'>"+palabra[c]+"</span>";
                             fila--;
                             columna--;
                         }
@@ -316,16 +355,22 @@
              * @returns matriz del tablero completado.
              */
             function rellenarTablero(mTablero){
-                let abecedario = ["a", "b", "c", "d", "e", "f", "g", "h",
-                                  "i", "j", "k", "l", "m", "n", "ñ", "o",
-                                  "p", "q", "r", "s", "t", "u", "v", "w",
+                let numero;
+                let consonantes = ["b", "c", "d", "f", "g", "h",
+                                  "j", "k", "l", "m", "n", "ñ", 
+                                  "p", "q", "r", "s", "t", "v", "w",
                                   "x", "y", "z"
                                  ];
-
+                let vocales = ["a", "e", "i", "o", "u"];
                 for (let i = 0; i < mTablero.length; i++){
                     for (let j = 0; j < mTablero.length; j++){
                         if(mTablero[i][j] === null){
-                            mTablero[i][j] = abecedario[Math.floor(Math.random(0, 1)*abecedario.length)];
+                            numero = Math.random();
+                            if(numero < 0.7){
+                                mTablero[i][j] = "<span class='vacio'>"+consonantes[Math.floor(Math.random(0, 1)*consonantes.length)]+"</span>";
+                            } else{
+                                mTablero[i][j] = "<span class='vacio'>"+vocales[Math.floor(Math.random(0, 1)*vocales.length)]+"</span>";
+                            }
                         }
                     }
                 }
@@ -338,9 +383,7 @@
             
             function mostrarPalabras(vPalabrasClave){
                 console.log(vPalabrasClave);
-                for(elements of vPalabrasClave){
-                    document.write(`${elements}, `);
-                }
+                document.write(vPalabrasClave);
             }
             
             function mostrarEnTabla(tablero){
