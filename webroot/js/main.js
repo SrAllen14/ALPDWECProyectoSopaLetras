@@ -2,7 +2,7 @@ import {mostrarPalabras, mostrarEnTabla} from './mostrarTabla.js';
 import {contarPalabras, crearTablero} from './creacionTablero.js';
 import {rellenarTablero} from './rellenarTablero.js';
 import {escribirPalabras, situarPalabras} from './situarPalabras.js';
-import {} from './horaReal.js';
+import {mostrarPuntuacion} from './mostrarTablaPuntuacion.js';
 
 let vPalabras = ["volante","barato","grande","idiota","pereza","zapato","abaco","coche","delta","folio","helio",
                 "sitio","jota","kilo","leon","rio","lunes","martes","miercoles","jueves","viernes","sabado", 
@@ -19,3 +19,4 @@ sopaDeLetras = rellenarTablero(sopaDeLetras);
 //mostrarPagina(sopaDeLetras);
 //mostrarPalabras(vPalabras);
 mostrarEnTabla(sopaDeLetras);
+mostrarPuntuacion();
