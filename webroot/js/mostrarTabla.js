@@ -9,6 +9,7 @@ export function mostrarPalabras(vPalabrasClave){
 }
 
 export function mostrarEnTabla(tablero){
+    let ejercicio = document.getElementById("container");
     let tabla = document.createElement("table");
     for(let i=0; i < tablero.length; i++){
         let fila = document.createElement("tr");
@@ -19,5 +20,5 @@ export function mostrarEnTabla(tablero){
         }
         tabla.appendChild(fila);
     }
-    document.body.appendChild(tabla);
+    ejercicio.appendChild(tabla);
 }
