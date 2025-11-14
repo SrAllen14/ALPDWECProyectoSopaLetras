@@ -1,4 +1,4 @@
-import {mostrarPalabras, mostrarEnTabla} from './mostrarTablero.js';
+import {mostrarPalabras, mostrarEnTabla} from './mostrarTabla.js';
 import {contarPalabras, crearTablero} from './creacionTablero.js';
 import {rellenarTablero} from './rellenarTablero.js';
 import {escribirPalabras, situarPalabras} from './situarPalabras.js';
@@ -16,4 +16,5 @@ sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
 sopaDeLetras = rellenarTablero(sopaDeLetras);
 
 //mostrarPagina(sopaDeLetras);
+mostrarPalabras(vPalabras);
 mostrarEnTabla(sopaDeLetras);

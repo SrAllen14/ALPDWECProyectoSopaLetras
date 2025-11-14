@@ -131,7 +131,7 @@ export function situarPalabras(vPalabras, mTablero){
                             }
                         }
                         break;
-                            default: console.log("");
+                    default: console.log(direccion+": dirección incorrecta");
                         break;
                     }
 
