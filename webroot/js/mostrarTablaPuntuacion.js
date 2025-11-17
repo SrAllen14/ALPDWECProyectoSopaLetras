@@ -1,9 +1,10 @@
 export function mostrarPuntuacion(){
     let ejercicio = document.getElementById("puntuacion");
     let tabla = document.createElement("table");
-    for(let i=0; i <= 2; i++){
+    tabla.classList = "punt";
+    for(let i=0; i <= 3; i++){
         let fila = document.createElement("tr");
-        for(let j = 0; j <= 2; j++){
+        for(let j = 0; j <= 3; j++){
             let columna = document.createElement("td");
             columna.innerHTML = `-`;
             fila.appendChild(columna);

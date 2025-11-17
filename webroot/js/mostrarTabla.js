@@ -11,6 +11,7 @@ export function mostrarPalabras(vPalabrasClave){
 export function mostrarEnTabla(tablero){
     let ejercicio = document.getElementById("container");
     let tabla = document.createElement("table");
+    tabla.classList = "sopa";
     for(let i=0; i < tablero.length; i++){
         let fila = document.createElement("tr");
         for(let j = 0; j < tablero.length; j++){
