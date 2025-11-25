@@ -163,52 +163,52 @@ export function escribirPalabras(fila, columna, direccion, palabra, mTablero){
     switch (direccion){
         case "ar":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 fila--;                       
             }
             break;
         case "dsi":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 fila--;
                 columna++;                        
             }
             break;
         case "izd":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 columna++;                      
             }
             break;
         case "dii":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 fila++;
                 columna++;
             }
             break;
         case "ab":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 fila++;                       
             }
             break;
         case "did":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 fila++; 
                 columna--;
             }
             break;
         case "drc":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 columna--;                       
             }
             break;
         case "dsd":
             for(let c = 0; c < palabra.length; c++){
-                mTablero[fila][columna]= "<span class='celda'>"+palabra[c]+"</span>";
+                mTablero[fila][columna]= palabra[c];
                 fila--;
                 columna--;
             }

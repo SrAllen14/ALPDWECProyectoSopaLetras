@@ -16,9 +16,9 @@ export function rellenarTablero(mTablero){
            if(mTablero[i][j] === null){
                numero = Math.random();
                if(numero < 0.7){
-                   mTablero[i][j] = "<span class='celda'>"+consonantes[Math.floor(Math.random(0, 1)*consonantes.length)]+"</span>";
+                   mTablero[i][j] = consonantes[Math.floor(Math.random(0, 1)*consonantes.length)];
                } else{
-                   mTablero[i][j] = "<span class='celda'>"+vocales[Math.floor(Math.random(0, 1)*vocales.length)]+"</span>";
+                   mTablero[i][j] = vocales[Math.floor(Math.random(0, 1)*vocales.length)];
                }
            }
        }

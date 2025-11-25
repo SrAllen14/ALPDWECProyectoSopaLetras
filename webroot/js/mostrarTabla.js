@@ -22,4 +22,48 @@ export function mostrarEnTabla(tablero){
         tabla.appendChild(fila);
     }
     ejercicio.appendChild(tabla);
+    
+    tabla.addEventListener("click", seleccionarCelda);
+}
+
+let primeraCelda = null;
+function seleccionarCelda(e){
+    if(primeraCelda === null){
+        primeraCelda = e.target;
+        primeraCelda.classList.add("seleccion");
+    } else{
+        const ultimaCelda = e.target;
+        comprobarSeleccion(primeraCelda, ultimaCelda, e.currentTarget);
+        primeraCelda = null; 
+    }
+    
+   
+}
+
+function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
+    const filaP = primeraCelda.parentElement.rowIndex;
+    const columnaP = primeraCelda.cellIndex;
+    
+    const filaU = ultimaCelda.parentElement.rowIndex;
+    const columnaU = ultimaCelda.cellIndex;
+    console.log(filaP+' '+columnaP);
+    console.log(filaU+' '+columnaU);
+    
+    const restaF = filaP-filaU;
+    const restaC = Math.abs(columnaP-columnaU);
+    if(!(filaP === filaU || columnaP === columnaU || Math.abs(restaF) === Math.abs(restaC))){
+        console.log("Elección invalida");
+    } else{
+        console.log("Elección valida");
+        if(restaF < 0){
+            
+        }
+        if(restaF < 0){
+            
+        }
+        if(restaF > 0){
+            
+        }
+        if(restaF > 0){}
+    }
 }
