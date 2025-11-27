@@ -46,24 +46,38 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
     
     const filaU = ultimaCelda.parentElement.rowIndex;
     const columnaU = ultimaCelda.cellIndex;
-    console.log(filaP+' '+columnaP);
-    console.log(filaU+' '+columnaU);
     
     const restaF = filaP-filaU;
-    const restaC = Math.abs(columnaP-columnaU);
+    const restaC = columnaP-columnaU;
     if(!(filaP === filaU || columnaP === columnaU || Math.abs(restaF) === Math.abs(restaC))){
         console.log("Elección invalida");
     } else{
         console.log("Elección valida");
-        if(restaF < 0){
-            
+        let fil = filaP;
+        let col = columnaP;
+        let celdaActual = tabla.rows[fil].cells[col];
+        let palabra = [];
+        celdaActual.classList.add("seleccion");
+        console.log(celdaActual.textContent);
+        palabra.push(celdaActual.textContent);
+        while(fil !== filaU || col !== columnaU){
+            if(restaF<0){
+                fil++;
+            } 
+            if(restaF>0){
+                fil--;
+            }
+            if(restaC<0){
+                col++;
+            } 
+            if(restaC>0){
+                col--;
+            }
+            let celdaActual = tabla.rows[fil].cells[col];
+            celdaActual.classList.add("seleccion");
+            console.log(celdaActual.textContent);
+            palabra.push(celdaActual.textContent);
         }
-        if(restaF < 0){
-            
-        }
-        if(restaF > 0){
-            
-        }
-        if(restaF > 0){}
+        console.log(palabra);
     }
 }
