@@ -29,7 +29,7 @@ export function mostrarEnTabla(tablero){
 
 let primeraCelda = null;
 function seleccionarCelda(e){
-    let palabraCompleta = null;
+    
     if(primeraCelda === null){
         primeraCelda = e.target;
         primeraCelda.classList.add("seleccion");
@@ -43,6 +43,7 @@ function seleccionarCelda(e){
 }
 
 function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
+    let palabraCompleta = null;
     const filaP = primeraCelda.parentElement.rowIndex;
     const columnaP = primeraCelda.cellIndex;
     
@@ -83,5 +84,53 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
         }
         palabraCompleta = palabra.join("");
         console.log(palabraCompleta);
+        
+        let vPalabrasOcultas = ["volante","barato","grande","idiota","pereza","zapato","abaco","coche","delta","folio","helio",
+                                "sitio","jota","kilo","leon","rio","lunes","martes","miercoles","jueves","viernes","sabado", 
+                                "domingo","enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre",
+                                "octubre","noviembre","diciembre"];
+        if(vPalabrasOcultas.includes(palabraCompleta)){
+            fil = filaP;
+            col = columnaP;
+            let celdaActual = tabla.rows[fil].cells[col];
+            celdaActual.classList.add("correcto");
+            while(fil !== filaU || col !== columnaU){
+                if(restaF<0){
+                    fil++;
+                } 
+                if(restaF>0){
+                    fil--;
+                }
+                if(restaC<0){
+                    col++;
+                } 
+                if(restaC>0){
+                    col--;
+                }
+                celdaActual = tabla.rows[fil].cells[col];
+                celdaActual.classList.add("correcto");
+            }
+        } else{
+            fil = filaP;
+            col = columnaP;
+            let celdaActual = tabla.rows[fil].cells[col];
+            celdaActual.classList.add("incorrecto");
+            while(fil !== filaU || col !== columnaU){
+                if(restaF<0){
+                    fil++;
+                } 
+                if(restaF>0){
+                    fil--;
+                }
+                if(restaC<0){
+                    col++;
+                } 
+                if(restaC>0){
+                    col--;
+                }
+                celdaActual = tabla.rows[fil].cells[col];
+                celdaActual.classList.add("incorrecto");
+            }
+        }
     }
 }
