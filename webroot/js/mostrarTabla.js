@@ -6,6 +6,7 @@ export function mostrarPalabras(vPalabrasClave){
         vector.appendChild(palabra);
     }
     document.body.appendChild(vector);
+    return vPalabarasClave;
 }
 
 export function mostrarEnTabla(tablero){
@@ -28,6 +29,7 @@ export function mostrarEnTabla(tablero){
 
 let primeraCelda = null;
 function seleccionarCelda(e){
+    let palabraCompleta = null;
     if(primeraCelda === null){
         primeraCelda = e.target;
         primeraCelda.classList.add("seleccion");
@@ -77,7 +79,9 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
             celdaActual.classList.add("seleccion");
             console.log(celdaActual.textContent);
             palabra.push(celdaActual.textContent);
+            
         }
-        console.log(palabra);
+        palabraCompleta = palabra.join("");
+        console.log(palabraCompleta);
     }
 }
