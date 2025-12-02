@@ -1,12 +1,12 @@
 export function mostrarPalabras(vPalabrasClave){
+    let palabras = document.getElementById("palabras");
     let vector = document.createElement("span");
     for(let i = 0; i < vPalabrasClave.length; i++){
         let palabra = document.createElement("p");
         palabra.innerHTML = `${vPalabrasClave[i]}`;
         vector.appendChild(palabra);
     }
-    document.body.appendChild(vector);
-    return vPalabarasClave;
+    palabras.appendChild(vector);
 }
 
 export function mostrarEnTabla(tablero){
@@ -29,7 +29,6 @@ export function mostrarEnTabla(tablero){
 
 let primeraCelda = null;
 function seleccionarCelda(e){
-    
     if(primeraCelda === null){
         primeraCelda = e.target;
         primeraCelda.classList.add("seleccion");
@@ -38,8 +37,6 @@ function seleccionarCelda(e){
         comprobarSeleccion(primeraCelda, ultimaCelda, e.currentTarget);
         primeraCelda = null; 
     }
-    
-   
 }
 
 function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
@@ -111,26 +108,28 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
                 celdaActual.classList.add("correcto");
             }
         } else{
-            fil = filaP;
-            col = columnaP;
-            let celdaActual = tabla.rows[fil].cells[col];
-            celdaActual.classList.add("incorrecto");
-            while(fil !== filaU || col !== columnaU){
-                if(restaF<0){
-                    fil++;
-                } 
-                if(restaF>0){
-                    fil--;
+            setTimeout(() => {
+                fil = filaP;
+                col = columnaP;
+                let celdaActual = tabla.rows[fil].cells[col];
+                celdaActual.classList.remove("seleccion");
+                while(fil !== filaU || col !== columnaU){
+                    if(restaF<0){
+                        fil++;
+                    } 
+                    if(restaF>0){
+                        fil--;
+                    }
+                    if(restaC<0){
+                        col++;
+                    } 
+                    if(restaC>0){
+                        col--;
+                    }
+                    celdaActual = tabla.rows[fil].cells[col];
+                    celdaActual.classList.remove("seleccion");
                 }
-                if(restaC<0){
-                    col++;
-                } 
-                if(restaC>0){
-                    col--;
-                }
-                celdaActual = tabla.rows[fil].cells[col];
-                celdaActual.classList.add("incorrecto");
-            }
+            }, 1000);
         }
     }
 }
