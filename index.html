@@ -47,6 +47,26 @@
                     color: white;
                 }
             }
+            
+            .btn{
+                width: 100px;
+                height: 50px;
+                text-align: center;
+                align-content: center;
+                background-color: lightcyan;
+                border-radius: 10px;
+            }
+            
+            .crono{
+                width: 100px;
+                height: 50px;
+                text-align: center;
+                align-content: center;
+                background-color: lightcoral;
+                border-radius: 10px;
+                color: white;
+            }
+            
             .sopa{
                 border-collapse: collapse;
                 height: 100%;
@@ -70,6 +90,11 @@
             .incorrecto{
                 background-color: lightcoral;
             }
+            
+            .tachado{
+                text-decoration: line-through;
+                color: lightgray;
+            }
             td{
                 text-align: center;
                 width: 25px;
@@ -80,6 +105,10 @@
             a{
                 text-decoration: none;
             }
+            
+            .oculto{
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -88,10 +117,17 @@
             <h3>Sopa de Letras</h3>
         </header>
         <main>
-            <div id="container"></div>
-            <div>
-                <div id="puntuacion"></div>
+            <div id="btnComenzar" class="btn">Comenzar</div>
+            <div id="cont1" class="oculto">
                 <div id="palabras"></div>
+                <div id="btnReiniciar" class="btn">Reiniciar</div>
+            </div>
+            <div id="cont2" class="oculto">
+                <div id="container"></div>
+            </div>
+            <div id="cont3" class="oculto">
+                <div id="contCronometro" class="crono"></div>
+                <div id="puntuacion"></div>
             </div>
             
         </main>

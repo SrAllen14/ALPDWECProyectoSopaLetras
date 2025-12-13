@@ -3,18 +3,11 @@ let vPalabras = ["lunes","martes","miercoles","jueves","viernes","sabado",
                 "julio","agosto","septiembre",
                 "octubre","noviembre","diciembre"];
 vPalabras.sort((a, b)=>b.length-a.length);
-
 let dimension = contarPalabras(vPalabras);
 let sopaDeLetras = crearTablero(dimension);
-
 sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
 sopaDeLetras = rellenarTablero(sopaDeLetras);
 
-//mostrarPagina(sopaDeLetras);
-//mostrarPalabras(vPalabras);
-mostrarEnTabla(sopaDeLetras);
-mostrarPalabras(vPalabras);
-mostrarPuntuacion();
 
 
 // Creación de tablero y cálculo de dimensión.
@@ -189,7 +182,7 @@ function situarPalabras(vPalabras, mTablero){
                             }
                         }
                         break;
-                    default: console.log(direccion+": dirección incorrecta");
+                    default: 
                         break;
                     }
 
@@ -307,13 +300,12 @@ function rellenarTablero(mTablero){
 // Mostrar tablero completo.
 function mostrarPalabras(vPalabrasClave){
     let palabras = document.getElementById("palabras");
-    let vector = document.createElement("span");
     for(let i = 0; i < vPalabrasClave.length; i++){
-        let palabra = document.createElement("p");
+        let palabra = document.createElement("div");
+        palabra.classList.add("palabra");
         palabra.innerHTML = `${vPalabrasClave[i]}`;
-        vector.appendChild(palabra);
+        palabras.appendChild(palabra);
     }
-    palabras.appendChild(vector);
 }
 
 function mostrarEnTabla(tablero){
@@ -346,6 +338,8 @@ function seleccionarCelda(e){
     }
 }
 
+
+var cont = 0;
 function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
     let palabraCompleta = null;
     const filaP = primeraCelda.parentElement.rowIndex;
@@ -357,15 +351,13 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
     const restaF = filaP-filaU;
     const restaC = columnaP-columnaU;
     if(!(filaP === filaU || columnaP === columnaU || Math.abs(restaF) === Math.abs(restaC))){
-        console.log("Elección invalida");
+        alert("Selección incorrecta. Debe ser en diagonal, vertical u horizontal");
     } else{
-        console.log("Elección valida");
         let fil = filaP;
         let col = columnaP;
         let celdaActual = tabla.rows[fil].cells[col];
         let palabra = [];
         celdaActual.classList.add("seleccion");
-        console.log(celdaActual.textContent);
         palabra.push(celdaActual.textContent);
         while(fil !== filaU || col !== columnaU){
             if(restaF<0){
@@ -382,21 +374,16 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
             }
             let celdaActual = tabla.rows[fil].cells[col];
             celdaActual.classList.add("seleccion");
-            console.log(celdaActual.textContent);
             palabra.push(celdaActual.textContent);
             
         }
         palabraCompleta = palabra.join("");
-        console.log(palabraCompleta);
         
-        let vPalabrasOcultas = ["volante","barato","grande","idiota","pereza","zapato","abaco","coche","delta","folio","helio",
-                                "sitio","jota","kilo","leon","rio","lunes","martes","miercoles","jueves","viernes","sabado", 
-                                "domingo","enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre",
-                                "octubre","noviembre","diciembre"];
-        if(vPalabrasOcultas.includes(palabraCompleta)){
+        if(vPalabras.includes(palabraCompleta)){
             fil = filaP;
             col = columnaP;
             let celdaActual = tabla.rows[fil].cells[col];
+            celdaActual.classList.remove("seleccion");
             celdaActual.classList.add("correcto");
             while(fil !== filaU || col !== columnaU){
                 if(restaF<0){
@@ -412,8 +399,20 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
                     col--;
                 }
                 celdaActual = tabla.rows[fil].cells[col];
+                celdaActual.classList.remove("seleccion");
                 celdaActual.classList.add("correcto");
             }
+            let palabrasTachadas = document.getElementsByClassName("palabra");
+            for(let i of palabrasTachadas){
+                if(i.textContent === palabraCompleta){
+                    i.classList.add("tachado");
+                }
+            }
+            cont ++;
+            if(vPalabras.length === cont){
+                pararCronometro();
+            }
+            
         } else{
             setTimeout(() => {
                 fil = filaP;
@@ -440,21 +439,35 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
         }
     }
 }
-// Mostrar la tabla de puntuación
-function mostrarPuntuacion(){
-    let ejercicio = document.getElementById("puntuacion");
-    let tabla = document.createElement("table");
-    tabla.classList = "punt";
-    for(let i=0; i <= 3; i++){
-        let fila = document.createElement("tr");
-        for(let j = 0; j <= 3; j++){
-            let columna = document.createElement("td");
-            columna.innerHTML = `-`;
-            fila.appendChild(columna);
-        }
-        tabla.appendChild(fila);
+
+// Cronómetro
+let minutos = 0;
+let segundos = 0;
+const contenedorCronometro = document.getElementById("contCronometro");
+
+function cronometrar(){
+    segundos ++;
+    if(segundos === 60){
+        minutos ++;
+        segundos = 0;
     }
-    ejercicio.appendChild(tabla);
+    let minutosFormateados = minutos < 10 ? '0' + minutos : '' + minutos;
+    let segundosFormateados = segundos < 10 ? '0' + segundos : ''+ segundos;
+    contenedorCronometro.textContent=minutosFormateados + ":" + segundosFormateados;
+}
+
+function tiempoTotal(){
+    return ((minutos*60) + segundos);
+}
+var crono;
+let botonComenzar = document.getElementById("btnComenzar");
+let botonReiniciar = document.getElementById("btnReiniciar");
+let divCont1 = document.getElementById("cont1");
+let divCont2 = document.getElementById("cont2");
+let divCont3 = document.getElementById("cont3");
+
+function pararCronometro(){
+    clearInterval(crono);
 }
 
 // Mostrar la hora real 
@@ -474,3 +487,49 @@ function horaReal(){
     cuadro.textContent = formato;
 }
 var reloj = setInterval(horaReal,1000);
+
+
+
+botonComenzar.addEventListener("click", (e)=>{
+    mostrarEnTabla(sopaDeLetras);
+    mostrarPalabras(vPalabras);
+    mostrarPuntuacion();
+    botonComenzar.classList.add("oculto");
+    botonReiniciar.classList.remove("oculto");
+    divCont1.classList.remove("oculto");
+    divCont2.classList.remove("oculto");
+    divCont3.classList.remove("oculto");
+    crono = setInterval(cronometrar, 1000);
+});
+
+botonReiniciar.addEventListener("click", ()=>{
+    location.reload();
+    crono = setInterval(cronometrar, 1000);
+});
+
+function mostrarPuntuacion(){
+    let ejercicio = document.getElementById("puntuacion");
+    let tabla = document.createElement("table");
+    tabla.classList = "punt";
+    let fila = document.createElement("tr");
+    var columna = document.createElement("td");
+    columna.innerHTML = "Posicion";
+    fila.appendChild(columna);
+    var columna = document.createElement("td");
+    columna.innerHTML = "Nombre";
+    fila.appendChild(columna);
+    var columna = document.createElement("td");
+    columna.innerHTML = "Puntuacion";
+    fila.appendChild(columna);
+    tabla.appendChild(fila);
+    for(let i=0; i <= 2; i++){
+        let fila = document.createElement("tr");
+        for(let j = 0; j <= 2; j++){
+            var columna = document.createElement("td");
+            columna.innerHTML = null;
+            fila.appendChild(columna);
+        }
+        tabla.appendChild(fila);
+    }
+    ejercicio.appendChild(tabla);
+}
