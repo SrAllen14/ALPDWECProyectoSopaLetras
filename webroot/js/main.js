@@ -1,7 +1,7 @@
-let vPalabras = ["lunes","martes","miercoles","jueves","viernes","sabado", 
+let vPalabras = ["lunes"/*,"martes","miercoles","jueves","viernes","sabado", 
                 "domingo","enero","febrero","marzo","abril","mayo","junio",
                 "julio","agosto","septiembre",
-                "octubre","noviembre","diciembre"];
+                "octubre","noviembre","diciembre"*/];
 vPalabras.sort((a, b)=>b.length-a.length);
 let dimension = contarPalabras(vPalabras);
 let sopaDeLetras = crearTablero(dimension);
@@ -410,7 +410,7 @@ function comprobarSeleccion(primeraCelda, ultimaCelda, tabla){
             }
             cont ++;
             if(vPalabras.length === cont){
-                pararCronometro();
+                finDeJuego();
             }
             
         } else{
@@ -488,25 +488,7 @@ function horaReal(){
 }
 var reloj = setInterval(horaReal,1000);
 
-
-
-botonComenzar.addEventListener("click", (e)=>{
-    mostrarEnTabla(sopaDeLetras);
-    mostrarPalabras(vPalabras);
-    mostrarPuntuacion();
-    botonComenzar.classList.add("oculto");
-    botonReiniciar.classList.remove("oculto");
-    divCont1.classList.remove("oculto");
-    divCont2.classList.remove("oculto");
-    divCont3.classList.remove("oculto");
-    crono = setInterval(cronometrar, 1000);
-});
-
-botonReiniciar.addEventListener("click", ()=>{
-    location.reload();
-    crono = setInterval(cronometrar, 1000);
-});
-
+/*
 function mostrarPuntuacion(){
     let ejercicio = document.getElementById("puntuacion");
     let tabla = document.createElement("table");
@@ -533,3 +515,128 @@ function mostrarPuntuacion(){
     }
     ejercicio.appendChild(tabla);
 }
+*/
+
+function guardarTiempoJuego(nombre, tiempoJuego) {
+    //se leen los tiempos que hay con localStorage. https://www.w3schools.com/jsref/prop_win_localstorage.asp
+    // no se guarda en un json fisico, es un almacenamiento en el navegador.
+    let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
+    //se añade el nuevo tiempo asociado  al nombre
+    tiempos.push({ 
+        nombre: nombre,
+        tiempoJuego: tiempoJuego });
+    //se ordena de menor a mayor    
+    tiempos.sort((a, b) => a.tiempoJuego - b.tiempoJuego);
+    //slice es para guardar solo los 3 primeros
+    tiempos = tiempos.slice(0, 3); 
+    //se gurada en localStorage. https://www.w3schools.com/js/js_json.asp
+    localStorage.setItem("mejoresTiempos", JSON.stringify(tiempos));
+
+    console.log("Tiempo guardado: ", {nombre, tiempoJuego});
+}
+
+function mostrarPosicion() {
+
+   let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
+     console.log(" MostrarPosicion: tabla con los datos:", tiempos);
+    // Si hay menos de 3 resultados, se completa con vacíos
+    while (tiempos.length < 3) {
+        tiempos.push({ nombre: "-", tiempoJuego: "-" });
+    }
+    // Crear cabecera de la tabla
+    const tabla = document.createElement("table");
+    const filaCabecera = document.createElement("tr");
+    const thPosicion = document.createElement("th");
+    thPosicion.textContent = "Posición";
+
+    const thJugador = document.createElement("th");
+    thJugador.textContent = "Jugador";
+
+    const thTiempo = document.createElement("th");
+    thTiempo.textContent = "Tiempo";
+
+    filaCabecera.appendChild(thPosicion);
+    filaCabecera.appendChild(thJugador);
+    filaCabecera.appendChild(thTiempo);
+
+    tabla.appendChild(filaCabecera);
+
+    // Crear filas de datos
+    const top3 = tiempos.slice(0, 3);//solo los tres mejores timpos. Solo 3 filas
+
+    for (let i = 0; i < top3.length; i++) {
+
+        const fila = document.createElement("tr");
+
+        const celdaPos = document.createElement("td");
+        celdaPos.textContent = i + 1;
+
+        const celdaJug = document.createElement("td");
+        celdaJug.textContent = top3[i].nombre;
+
+        const celdaTiempo = document.createElement("td");
+        celdaTiempo.textContent = top3[i].tiempoJuego;
+
+        fila.appendChild(celdaPos);
+        fila.appendChild(celdaJug);
+        fila.appendChild(celdaTiempo);
+
+        tabla.appendChild(fila);
+    }
+
+    const contenedor = document.getElementById("puntuacion");
+    //hay que limpiar el contendor porque sino sale varias veces la tabla
+    contenedor.innerHTML = ""; 
+    contenedor.appendChild(tabla);
+    //console.log(" Contenedor mostrarPosicion:", contenedor);
+}
+
+
+
+/*  Mensaje de aviso por si las cookies están deshabilitadas*/
+
+if (!navigator.cookieEnabled) {
+    alert("Las cookies están deshabilitadas. No se pueden guardar las puntuaciones.");
+}
+
+function finDeJuego() {
+  //se para el cronometro
+  pararCronometro();
+  //se pide el nombre del jugador
+  const nombre = prompt("Has terminado el juego! Introduce tu nombre:");
+  //se guarda el tiempo en segundos
+  const tiempoJuego = tiempoTotal();
+
+  //Si no hay nombre(o se da a cancelar) o está vacío no se guarda el tiempo
+  if (!nombre || nombre.trim() === "") {
+    console.log("Juego terminado, nombre no introducido. No se guarda el tiempo.");
+    mostrarPosicion(); // Si el usuario le da a cancelar o no introduce un nombre, no se guarda el tiempo.
+    return;
+  }
+
+  console.log("Tiempo de juego en segundos: ", tiempoJuego);
+  //SE guarda el tiempo y el nombre en localStorage
+  guardarTiempoJuego(nombre, tiempoJuego);
+  console.log("Datos guardados en localStorage");
+  console.log("LocalStorage actual:", localStorage.getItem("mejoresTiempos"));
+  //se muestra la tabla de puntuacion
+  mostrarPosicion();
+}
+
+botonComenzar.addEventListener("click", (e)=>{
+    mostrarEnTabla(sopaDeLetras);
+    mostrarPalabras(vPalabras);
+    mostrarPosicion();
+    botonComenzar.classList.add("oculto");
+    botonReiniciar.classList.remove("oculto");
+    divCont1.classList.remove("oculto");
+    divCont2.classList.remove("oculto");
+    divCont3.classList.remove("oculto");
+    crono = setInterval(cronometrar, 1000);
+});
+
+botonReiniciar.addEventListener("click", ()=>{
+    location.reload();
+    crono = setInterval(cronometrar, 1000);
+});
+
