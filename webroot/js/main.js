@@ -1,7 +1,7 @@
-let vPalabras = ["lunes"/*,"martes","miercoles","jueves","viernes","sabado", 
+let vPalabras = ["lunes","martes","miercoles","jueves","viernes","sabado", 
                 "domingo","enero","febrero","marzo","abril","mayo","junio",
                 "julio","agosto","septiembre",
-                "octubre","noviembre","diciembre"*/];
+                "octubre","noviembre","diciembre"];
 vPalabras.sort((a, b)=>b.length-a.length);
 let dimension = contarPalabras(vPalabras);
 let sopaDeLetras = crearTablero(dimension);
@@ -307,10 +307,9 @@ function mostrarPalabras(vPalabrasClave){
         palabras.appendChild(palabra);
     }
 }
-
+var tabla = document.createElement("table");
 function mostrarEnTabla(tablero){
-    let ejercicio = document.getElementById("container");
-    let tabla = document.createElement("table");
+    let ejercicio = document.getElementById("container"); 
     tabla.classList = "sopa";
     for(let i=0; i < tablero.length; i++){
         let fila = document.createElement("tr");
@@ -488,35 +487,6 @@ function horaReal(){
 }
 var reloj = setInterval(horaReal,1000);
 
-/*
-function mostrarPuntuacion(){
-    let ejercicio = document.getElementById("puntuacion");
-    let tabla = document.createElement("table");
-    tabla.classList = "punt";
-    let fila = document.createElement("tr");
-    var columna = document.createElement("td");
-    columna.innerHTML = "Posicion";
-    fila.appendChild(columna);
-    var columna = document.createElement("td");
-    columna.innerHTML = "Nombre";
-    fila.appendChild(columna);
-    var columna = document.createElement("td");
-    columna.innerHTML = "Puntuacion";
-    fila.appendChild(columna);
-    tabla.appendChild(fila);
-    for(let i=0; i <= 2; i++){
-        let fila = document.createElement("tr");
-        for(let j = 0; j <= 2; j++){
-            var columna = document.createElement("td");
-            columna.innerHTML = null;
-            fila.appendChild(columna);
-        }
-        tabla.appendChild(fila);
-    }
-    ejercicio.appendChild(tabla);
-}
-*/
-
 function guardarTiempoJuego(nombre, tiempoJuego) {
     //se leen los tiempos que hay con localStorage. https://www.w3schools.com/jsref/prop_win_localstorage.asp
     // no se guarda en un json fisico, es un almacenamiento en el navegador.
@@ -593,21 +563,21 @@ function mostrarPosicion() {
 
 
 
-/*  Mensaje de aviso por si las cookies están deshabilitadas*/
-
 if (!navigator.cookieEnabled) {
     alert("Las cookies están deshabilitadas. No se pueden guardar las puntuaciones.");
 }
 
 function finDeJuego() {
-  //se para el cronometro
+  // Se deshabilita el evento de click.
+  tabla.removeEventListener("click", seleccionarCelda);
+  // Se para el cronometro
   pararCronometro();
-  //se pide el nombre del jugador
+  // Se pide el nombre del jugador
   const nombre = prompt("Has terminado el juego! Introduce tu nombre:");
-  //se guarda el tiempo en segundos
+  // Se guarda el tiempo en segundos
   const tiempoJuego = tiempoTotal();
 
-  //Si no hay nombre(o se da a cancelar) o está vacío no se guarda el tiempo
+  // Si no hay nombre(o se da a cancelar) o está vacío no se guarda el tiempo
   if (!nombre || nombre.trim() === "") {
     console.log("Juego terminado, nombre no introducido. No se guarda el tiempo.");
     mostrarPosicion(); // Si el usuario le da a cancelar o no introduce un nombre, no se guarda el tiempo.
@@ -615,14 +585,15 @@ function finDeJuego() {
   }
 
   console.log("Tiempo de juego en segundos: ", tiempoJuego);
-  //SE guarda el tiempo y el nombre en localStorage
+  // Se guarda el tiempo y el nombre en localStorage
   guardarTiempoJuego(nombre, tiempoJuego);
   console.log("Datos guardados en localStorage");
   console.log("LocalStorage actual:", localStorage.getItem("mejoresTiempos"));
-  //se muestra la tabla de puntuacion
+  // se muestra la tabla de puntuacion
   mostrarPosicion();
 }
 
+// Botón que inicia la partida.
 botonComenzar.addEventListener("click", (e)=>{
     mostrarEnTabla(sopaDeLetras);
     mostrarPalabras(vPalabras);
@@ -635,6 +606,7 @@ botonComenzar.addEventListener("click", (e)=>{
     crono = setInterval(cronometrar, 1000);
 });
 
+// Botón que reinicia la partida recargando la página.
 botonReiniciar.addEventListener("click", ()=>{
     location.reload();
     crono = setInterval(cronometrar, 1000);
