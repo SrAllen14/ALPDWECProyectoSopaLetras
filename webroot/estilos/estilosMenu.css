@@ -1,0 +1,153 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 12 ene 2026, 16:48:13
+    Author     : Clase
+*/
+
+*{
+    box-sizing: border-box;
+}
+
+.cabecera1, .cabecera3{
+    font-weight: bold;
+}
+
+.menu1, .menu2, .menu3{
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    padding: 30px;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+}
+
+.menu1 .btn, .menu3 .btn{
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    align-content: center;
+    background-color: lightcyan;
+    border-radius: 10px;
+    color: gray;
+}
+
+.menu1 .cont1, .menu3 .cont3{
+    width: 100%;
+    padding: 20px;
+    justify-items: center;
+}
+
+.menu1 .cont1 h2{
+    display: block;
+    width: 100%;
+    background-color: lightgray;
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.menu1 .cont1 .palabras{
+    display: flex;
+    flex-flow: wrap;
+    width: 100%;
+    padding: 20px;
+    background-color: skyblue;
+    justify-content: space-around;
+    border-radius: 0 0 5px 5px;
+}
+
+
+.menu2 .cont2 .contsopa .sopa{
+    border-collapse: collapse;
+    
+}
+.menu2 .cont2 .contsopa .sopa td{
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    border: 1px solid black;
+}
+
+.menu3 .cont3 .cont3_1{
+    display: flex;
+    width: 100%;
+    max-width: 300px;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.menu3 .cont3 .cont3_1 .crono{
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    align-content: center;
+    background-color: lightcoral;
+    border-radius: 10px;
+    color: white;
+}
+.menu3 .cont3 .puntuacion{
+    width: 100%;
+    justify-items: center;
+}
+
+.menu3 .cont3 .puntuacion table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.menu3 .cont3 .puntuacion tr:nth-child(1){
+    text-align: center;
+    border: 1px solid black;
+    background-color: skyblue;
+}
+
+.menu3 .cont3 .puntuacion td{
+    text-align: center;
+    border: 1px solid black;
+}
+
+.menu3 .cont3 .puntuacion td:nth-child(1){
+    background-color: skyblue;
+}
+
+.oculto{
+    display: none;
+}
+
+.seleccion{
+    background-color: yellow;
+}
+
+.correcto{
+    background-color: lightgreen;
+}
+
+.incorrecto{
+    background-color: lightcoral;
+}
+
+.tachado{
+    text-decoration: line-through;
+    color: lightgray;
+}
+
+@media(max-width: 920px){
+    .menu1, .menu2, .menu3{
+        padding: 10px;
+        flex-direction: column;
+    }
+    
+    .menu2 td{
+        min-width: 25px;
+        min-height: 25px;
+    }
+    
+    .menu3 .cont3 .puntuacion table{
+        max-width: 480px;
+        
+    }
+}

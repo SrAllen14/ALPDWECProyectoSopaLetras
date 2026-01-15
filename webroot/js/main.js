@@ -1,13 +1,9 @@
-let vPalabras = ["lunes","martes","miercoles","jueves","viernes","sabado", 
-                "domingo","enero","febrero","marzo","abril","mayo","junio",
-                "julio","agosto","septiembre",
-                "octubre","noviembre","diciembre"];
+let vPalabras = ["lunes"];
 vPalabras.sort((a, b)=>b.length-a.length);
 let dimension = contarPalabras(vPalabras);
 let sopaDeLetras = crearTablero(dimension);
 sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
 sopaDeLetras = rellenarTablero(sopaDeLetras);
-
 
 
 // Creación de tablero y cálculo de dimensión.
@@ -488,21 +484,20 @@ function horaReal(){
 var reloj = setInterval(horaReal,1000);
 
 function guardarTiempoJuego(nombre, tiempoJuego) {
-    //se leen los tiempos que hay con localStorage. https://www.w3schools.com/jsref/prop_win_localstorage.asp
-    // no se guarda en un json fisico, es un almacenamiento en el navegador.
+    let jugador = new Puntuacion("facil", null, nombre, tiempoJuego);
     let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
-    //se añade el nuevo tiempo asociado  al nombre
-    tiempos.push({ 
-        nombre: nombre,
-        tiempoJuego: tiempoJuego });
-    //se ordena de menor a mayor    
-    tiempos.sort((a, b) => a.tiempoJuego - b.tiempoJuego);
+    tiempos.push(jugador);
+    tiempos.sort((a,b) => a._puntaje - b._puntaje);
+    tiempos.forEach((element, index)=>{
+        element._posicion = index+1;
+    });
     //slice es para guardar solo los 3 primeros
     tiempos = tiempos.slice(0, 3); 
     //se gurada en localStorage. https://www.w3schools.com/js/js_json.asp
     localStorage.setItem("mejoresTiempos", JSON.stringify(tiempos));
-
-    console.log("Tiempo guardado: ", {nombre, tiempoJuego});
+    
+    console.log(tiempos, tiempos.length);
+    console.log(jugador);
 }
 
 function mostrarPosicion() {
@@ -542,10 +537,10 @@ function mostrarPosicion() {
         celdaPos.textContent = i + 1;
 
         const celdaJug = document.createElement("td");
-        celdaJug.textContent = top3[i].nombre;
+        celdaJug.textContent = top3[i]._nombre;
 
         const celdaTiempo = document.createElement("td");
-        celdaTiempo.textContent = top3[i].tiempoJuego;
+        celdaTiempo.textContent = top3[i]._puntaje;
 
         fila.appendChild(celdaPos);
         fila.appendChild(celdaJug);
@@ -612,3 +607,63 @@ botonReiniciar.addEventListener("click", ()=>{
     crono = setInterval(cronometrar, 1000);
 });
 
+class Puntuacion{
+    constructor(nivel, posicion, nombre, puntaje){
+        this._nivel = nivel;
+        this._posicion = posicion;
+        this._nombre = nombre;
+        this._puntaje = puntaje;
+    }
+    
+    get posicion(){
+        return this._posicion;
+    }
+    
+    get nivel(){
+        return this._nivel;
+    }
+    
+    get nombre(){
+        return this._nombre;
+    }
+    
+    get puntaje(){
+        return this._puntaje;
+    }
+    
+    set posicion(posicion){
+        this._posicion = posicion;
+    }
+    
+    set nivel(nivel){
+        this._nivel = nivel;
+    }
+    
+    set nombre(nombre){
+        this._nombre = nombre;
+    }
+    
+    set puntaje(puntaje){
+        this._puntaje = puntaje;
+    }
+}
+
+
+
+/*
+    //se leen los tiempos que hay con localStorage. https://www.w3schools.com/jsref/prop_win_localstorage.asp
+    // no se guarda en un json fisico, es un almacenamiento en el navegador.
+    let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
+    //se añade el nuevo tiempo asociado  al nombre
+    tiempos.push({ 
+        nombre: nombre,
+        tiempoJuego: tiempoJuego });
+    //se ordena de menor a mayor    
+    tiempos.sort((a, b) => a.tiempoJuego - b.tiempoJuego);
+    //slice es para guardar solo los 3 primeros
+    tiempos = tiempos.slice(0, 3); 
+    //se gurada en localStorage. https://www.w3schools.com/js/js_json.asp
+    localStorage.setItem("mejoresTiempos", JSON.stringify(tiempos));
+
+    console.log("Tiempo guardado: ", {nombre, tiempoJuego});
+ */
