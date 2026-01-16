@@ -1,10 +1,52 @@
-let vPalabras = ["lunes"];
-vPalabras.sort((a, b)=>b.length-a.length);
-let dimension = contarPalabras(vPalabras);
-let sopaDeLetras = crearTablero(dimension);
-sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
-sopaDeLetras = rellenarTablero(sopaDeLetras);
+var vFacil = ["primavera", "verano", "otoño", "invierno"];
+var vMedio = ["lunes", "martes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+var vDificil = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
+
+
+
+
+// Función que inicia la partida.
+function comenzarPartida(vPalabras){
+    vPalabras.sort((a, b)=>b.length-a.length);
+    let dimension = contarPalabras(vPalabras);
+    let sopaDeLetras = crearTablero(dimension);
+    sopaDeLetras = situarPalabras(vPalabras, sopaDeLetras);
+    sopaDeLetras = rellenarTablero(sopaDeLetras);
+    mostrarEnTabla(sopaDeLetras);
+    mostrarPalabras(vPalabras);
+    mostrarPosicion();
+    btnFacil.classList.add("oculto");
+    btnMedio.classList.add("oculto");
+    btnDificil.classList.add("oculto");
+    botonReiniciar.classList.remove("oculto");
+    divCont1.classList.remove("oculto");
+    divCont2.classList.remove("oculto");
+    divCont3.classList.remove("oculto");
+    crono = setInterval(cronometrar, 1000);
+}
+
+// Selección de dificultad de la partida.
+let btnFacil = document.getElementById("btnFacil");
+let btnMedio = document.getElementById("btnMedio");
+let btnDificil= document.getElementById("btnDificil");
+
+
+btnFacil.addEventListener("click", (e)=>{
+    let vPalabrasOcultas = vFacil;
+    comenzarPartida(vPalabrasOcultas);
+});
+
+
+btnMedio.addEventListener("click", (e)=>{
+    let vPalabrasOcultas = vMedio;
+    comenzarPartida(vPalabrasOcultas);
+});
+
+btnDificil.addEventListener("click", (e)=>{
+    let vPalabrasOcultas = vDificil;
+    comenzarPartida(vPalabrasOcultas);
+});
 
 // Creación de tablero y cálculo de dimensión.
 
@@ -455,7 +497,6 @@ function tiempoTotal(){
     return ((minutos*60) + segundos);
 }
 var crono;
-let botonComenzar = document.getElementById("btnComenzar");
 let botonReiniciar = document.getElementById("btnReiniciar");
 let divCont1 = document.getElementById("cont1");
 let divCont2 = document.getElementById("cont2");
@@ -484,7 +525,7 @@ function horaReal(){
 var reloj = setInterval(horaReal,1000);
 
 function guardarTiempoJuego(nombre, tiempoJuego) {
-    let jugador = new Puntuacion("facil", null, nombre, tiempoJuego);
+    let jugador = new Puntuacion(null, null, nombre, tiempoJuego);
     let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
     tiempos.push(jugador);
     tiempos.sort((a,b) => a._puntaje - b._puntaje);
@@ -588,18 +629,6 @@ function finDeJuego() {
   mostrarPosicion();
 }
 
-// Botón que inicia la partida.
-botonComenzar.addEventListener("click", (e)=>{
-    mostrarEnTabla(sopaDeLetras);
-    mostrarPalabras(vPalabras);
-    mostrarPosicion();
-    botonComenzar.classList.add("oculto");
-    botonReiniciar.classList.remove("oculto");
-    divCont1.classList.remove("oculto");
-    divCont2.classList.remove("oculto");
-    divCont3.classList.remove("oculto");
-    crono = setInterval(cronometrar, 1000);
-});
 
 // Botón que reinicia la partida recargando la página.
 botonReiniciar.addEventListener("click", ()=>{
@@ -647,23 +676,3 @@ class Puntuacion{
         this._puntaje = puntaje;
     }
 }
-
-
-
-/*
-    //se leen los tiempos que hay con localStorage. https://www.w3schools.com/jsref/prop_win_localstorage.asp
-    // no se guarda en un json fisico, es un almacenamiento en el navegador.
-    let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
-    //se añade el nuevo tiempo asociado  al nombre
-    tiempos.push({ 
-        nombre: nombre,
-        tiempoJuego: tiempoJuego });
-    //se ordena de menor a mayor    
-    tiempos.sort((a, b) => a.tiempoJuego - b.tiempoJuego);
-    //slice es para guardar solo los 3 primeros
-    tiempos = tiempos.slice(0, 3); 
-    //se gurada en localStorage. https://www.w3schools.com/js/js_json.asp
-    localStorage.setItem("mejoresTiempos", JSON.stringify(tiempos));
-
-    console.log("Tiempo guardado: ", {nombre, tiempoJuego});
- */
