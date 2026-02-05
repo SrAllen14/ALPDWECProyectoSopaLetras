@@ -1,7 +1,7 @@
 import {Puntuacion} from './puntuacion.js';
 
-export function guardarTiempoJuego(nombre, tiempoJuego) {
-    let jugador = new Puntuacion(null, null, nombre, tiempoJuego);
+export function guardarTiempoJuego(nombre, nivel,tiempoJuego) {
+    let jugador = new Puntuacion(nivel, null, nombre, tiempoJuego);
     let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
     tiempos.push(jugador);
     tiempos.sort((a,b) => a._puntaje - b._puntaje);

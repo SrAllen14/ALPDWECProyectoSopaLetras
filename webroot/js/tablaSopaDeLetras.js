@@ -462,7 +462,7 @@ function finDeJuego() {
 
   console.log("Tiempo de juego en segundos: ", tiempoJuego);
   // Se guarda el tiempo y el nombre en localStorage
-  guardarTiempoJuego(nombre, tiempoJuego);
+  guardarTiempoJuego(nombre,nivel,tiempoJuego);
   console.log("Datos guardados en localStorage");
   console.log("LocalStorage actual:", localStorage.getItem("mejoresTiempos"));
   // se muestra la tabla de puntuacion
