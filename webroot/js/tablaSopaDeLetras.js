@@ -2,9 +2,10 @@ import {pararCronometro, tiempoTotal} from './contadorJuego.js';
 import {mostrarPosicion, guardarTiempoJuego} from './tablaPuntuacion.js';
 // Creación de tablero y cálculo de dimensión.
 let palabrasJuego = [];
+let nivelJuego;
 
-
-export function crearSopa(vPalabras) {
+export function crearSopa(vPalabras, nivel) {
+    nivelJuego = nivel;
     palabrasJuego = [...vPalabras];
     vPalabras.sort((a, b) => b.length - a.length);
     const dimension = contarPalabras(vPalabras);
@@ -462,9 +463,9 @@ function finDeJuego() {
 
   console.log("Tiempo de juego en segundos: ", tiempoJuego);
   // Se guarda el tiempo y el nombre en localStorage
-  guardarTiempoJuego(nombre,nivel,tiempoJuego);
+  guardarTiempoJuego(nombre,nivelJuego,tiempoJuego);
   console.log("Datos guardados en localStorage");
   console.log("LocalStorage actual:", localStorage.getItem("mejoresTiempos"));
   // se muestra la tabla de puntuacion
-  mostrarPosicion();
+  mostrarPosicion(nivelJuego);
 }

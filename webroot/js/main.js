@@ -11,42 +11,6 @@ const vDificil = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO"
 
 var vPalabras;
 var nivel;
-const urlPalabras = 'https://random-word-api.herokuapp.com/word?number=42&lang=es&length=10';
-const listaPalabras = document.getElementById('palabras');
- 
- fetch(urlPalabras)
-        //.then(response =>console.log(response));
-        .then(response => response.json())
-        //  .then(datos=> console.log(datos));
-        .then((data) => {
-            data.results.forEach(palabra => {
-            //div usuario. Contenedor de los demás divs
-            const pPalabra = document.createElement("p");
-            pPalabra.textContent = palabra;
-            // divUsuario.classList.add("usuario");
-            // //div para el nombre
-            // const divNombre = document.createElement("div");
-            // divNombre.textContent="Nombre: "+usuario.name.first + " "+usuario.name.last;
-            // divNombre.classList.add("nombre");
-            // //div para la foto
-            // const divFoto = document.createElement("div");
-            // divFoto.classList.add("fotoUsuario");
-            // const img = document.createElement("img");
-            // img.src=usuario.picture.large;
-            // divFoto.append(img);
-            // //div para el pais
-            // const divPais = document.createElement("div");
-            // divPais.textContent="Pais: "+usuario.location.country;
-            // //div para el email
-            // const divEmail = document.createElement("div");
-            // divEmail.textContent="Email: "+usuario.email;
-            // //se crean los divs del usuario
-            // divUsuario.append(divNombre, divFoto, divPais, divEmail);
-            // //se crea el contenedor de usuarios
-            listaPalabras.append(pPalabra);
-    });
-    console.log(listaPalabras);
-}).catch(error => console.error(error));
 
 
 // Selección de dificultad de la partida.
@@ -54,25 +18,71 @@ let btnFacil = document.getElementById("btnFacil");
 let btnMedio = document.getElementById("btnMedio");
 let btnDificil= document.getElementById("btnDificil");
 
-
-btnFacil.addEventListener("click", (e)=>{
-    vPalabras = vFacil;
-    comenzarPartida(vPalabras);
+btnFacil.addEventListener("click", async()=>{
     nivel = "facil";
+    const vPalabras = await obtenerPalabrasPorNivel(nivel);
+    comenzarPartida(vPalabras, nivel);
+    
 });
 
 
-btnMedio.addEventListener("click", (e)=>{
-     vPalabras = vMedio;
-    comenzarPartida(vPalabras);
+btnMedio.addEventListener("click", async()=>{
     nivel = "medio";
+    const vPalabras = await obtenerPalabrasPorNivel(nivel);
+    comenzarPartida(vPalabras, nivel);
+    
 });
 
-btnDificil.addEventListener("click", (e)=>{
-    vPalabras = vDificil;
-    comenzarPartida(vPalabras);
+btnDificil.addEventListener("click", async()=>{
     nivel = "dificil";
+    const vPalabras = await obtenerPalabrasPorNivel(nivel);
+    comenzarPartida(vPalabras, nivel);
+    
 });
+
+async function obtenerPalabrasPorNivel(nivel) {
+  const cantidades = {
+    facil: 4,
+    medio: 7,
+    dificil: 12
+  };
+
+  const cantidad = cantidades[nivel];
+
+  // Arrays de respaldo
+  const respaldo = {
+    facil: vFacil,
+    medio: vMedio,
+    dificil: vDificil
+  };
+
+  const url = `https://random-word-api.herokuapp.com/word?number=${cantidad}&lang=es`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) throw new Error("Error en la API");
+
+    const data = await response.json();
+
+    // La API devuelve un array directamente (NO data.results)
+    let palabras = data
+      .map(p => p.toUpperCase())
+      .filter(p => p.length >= 3); // opcional
+
+    // Si por lo que sea no devuelve suficientes
+    if (palabras.length < cantidad) throw new Error("No hay suficientes palabras");
+
+    return palabras.slice(0, cantidad);
+
+  } catch (error) {
+    console.warn("API falló, usando respaldo:", error);
+
+    // Devuelve el respaldo, recortado al número correcto
+    return respaldo[nivel].slice(0, cantidad);
+  }
+}
+
 
 let botonReiniciar = document.getElementById("btnReiniciar");
 let divCont1 = document.getElementById("cont1");
@@ -86,7 +96,7 @@ botonReiniciar.addEventListener("click", ()=>{
 });
 
 // Función que inicia la partida.
-function comenzarPartida(palabras){
+function comenzarPartida(palabras, nivel){
     btnFacil.classList.add("oculto");
     btnMedio.classList.add("oculto");
     btnDificil.classList.add("oculto");
@@ -95,7 +105,7 @@ function comenzarPartida(palabras){
     divCont2.classList.remove("oculto");
     divCont3.classList.remove("oculto");
     vPalabras = palabras;
-    crearSopa(vPalabras);
+    crearSopa(vPalabras, nivel);
     iniciarCronometro();
-    mostrarPosicion();
+    mostrarPosicion(nivel);
 }

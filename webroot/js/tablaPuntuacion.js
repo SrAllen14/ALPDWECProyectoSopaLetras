@@ -1,6 +1,6 @@
 import {Puntuacion} from './puntuacion.js';
 
-export function guardarTiempoJuego(nombre, nivel,tiempoJuego) {
+export function guardarTiempoJuego(nombre, nivel, tiempoJuego) {
     let jugador = new Puntuacion(nivel, null, nombre, tiempoJuego);
     let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
     tiempos.push(jugador);
@@ -8,22 +8,25 @@ export function guardarTiempoJuego(nombre, nivel,tiempoJuego) {
     tiempos.forEach((element, index)=>{
         element._posicion = index+1;
     });
-    //slice es para guardar solo los 3 primeros
-    tiempos = tiempos.slice(0, 3); 
     //se gurada en localStorage. https://www.w3schools.com/js/js_json.asp
     localStorage.setItem("mejoresTiempos", JSON.stringify(tiempos));
-    
-    console.log(tiempos, tiempos.length);
-    console.log(jugador);
 }
 
-export function mostrarPosicion() {
+export function mostrarPosicion(nivel) {
 
-   let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
-     console.log(" MostrarPosicion: tabla con los datos:", tiempos);
+    let tiempos = JSON.parse(localStorage.getItem("mejoresTiempos")) || [];
+     
+    var top3 = [];
+    for(let i = 0; i < tiempos.length; i++){
+        if(tiempos[i]._nivel === nivel){
+            top3.push(tiempos[i]);
+        }
+    }
+    top3 = top3.slice(0, 3);
+    console.log(" MostrarPosicion: tabla con los datos:", top3);
     // Si hay menos de 3 resultados, se completa con vacíos
-    while (tiempos.length < 3) {
-        tiempos.push({ nombre: "-", tiempoJuego: "-" });
+    while (top3.length < 3) {
+        top3.push({ nombre: "-", tiempoJuego: "-" });
     }
     // Crear cabecera de la tabla
     const tabla = document.createElement("table");
@@ -42,10 +45,8 @@ export function mostrarPosicion() {
     filaCabecera.appendChild(thTiempo);
 
     tabla.appendChild(filaCabecera);
-
-    // Crear filas de datos
-    const top3 = tiempos.slice(0, 3);//solo los tres mejores timpos. Solo 3 filas
-
+    
+    
     for (let i = 0; i < top3.length; i++) {
 
         const fila = document.createElement("tr");

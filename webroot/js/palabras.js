@@ -1,4 +1,4 @@
-const urlPalabras = 'https://random-word-api.herokuapp.com/word?number=42&lang=es&length=10';
+const urlPalabras = 'https://random-word-api.herokuapp.com/word?number=42&lang=es&length=6';
 const listaPalabras = document.querySelector('#listaPalabras');
  
  fetch(urlPalabras)
