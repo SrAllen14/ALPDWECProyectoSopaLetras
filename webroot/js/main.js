@@ -41,46 +41,46 @@ btnDificil.addEventListener("click", async()=>{
 });
 
 async function obtenerPalabrasPorNivel(nivel) {
-  const cantidades = {
-    facil: 4,
-    medio: 7,
-    dificil: 12
-  };
+    const cantidades = {
+      facil: 4,
+      medio: 7,
+      dificil: 12
+    };
 
-  const cantidad = cantidades[nivel];
+    const cantidad = cantidades[nivel];
 
-  // Arrays de respaldo
-  const respaldo = {
-    facil: vFacil,
-    medio: vMedio,
-    dificil: vDificil
-  };
+    // Arrays de respaldo
+    const respaldo = {
+      facil: vFacil,
+      medio: vMedio,
+      dificil: vDificil
+    };
 
-  const url = `https://random-word-api.herokuapp.com/word?number=${cantidad}&lang=es`;
+    const url = `https://random-word-api.herokuapp.com/word?number=${cantidad*3}&lang=es`;
 
-  try {
-    const response = await fetch(url);
+    try {
+      const response = await fetch(url);
 
-    if (!response.ok) throw new Error("Error en la API");
+      if (!response.ok) throw new Error("Error en la API");
 
-    const data = await response.json();
+      const data = await response.json();
 
-    // La API devuelve un array directamente (NO data.results)
-    let palabras = data
-      .map(p => p.toUpperCase())
-      .filter(p => p.length >= 3); // opcional
+      // La API devuelve un array directamente (NO data.results)
+      let palabras = data
+        .map(p => p.toUpperCase())
+        .filter(p => p.length >= 3 && p.length <= 8); // máximo 8 letras
 
-    // Si por lo que sea no devuelve suficientes
-    if (palabras.length < cantidad) throw new Error("No hay suficientes palabras");
+      // Si no devuelve suficientes, lanzamos error
+      if (palabras.length < cantidad) throw new Error("No hay suficientes palabras válidas");
 
-    return palabras.slice(0, cantidad);
+      return palabras.slice(0, cantidad);
 
-  } catch (error) {
-    console.warn("API falló, usando respaldo:", error);
+    } catch (error) {
+      console.warn("API falló, usando respaldo:", error);
 
-    // Devuelve el respaldo, recortado al número correcto
-    return respaldo[nivel].slice(0, cantidad);
-  }
+      // Devuelve el respaldo, recortado al número correcto
+      return respaldo[nivel].slice(0, cantidad);
+    }
 }
 
 
