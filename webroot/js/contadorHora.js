@@ -1,4 +1,5 @@
-export function horaReal(){
+// Mostrar la hora real 
+function horaReal(){
     let fecha = new Date();
     let hora = fecha.getHours().toString();
     let min = fecha.getMinutes().toString();
@@ -13,4 +14,7 @@ export function horaReal(){
     let formato = `${hora}`+`:`+`${min}`+`:`+`${sec}`;
     cuadro.textContent = formato;
 }
-var reloj = setInterval(horaReal,1000);
+
+export function iniciarReloj(){
+    setInterval(horaReal,1000);
+}
